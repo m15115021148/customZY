@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/_15px_in720p"
+            android:paddingTop="@dimen/_15px_in720p">
+
+            <TextView
+                android:id="@+id/orderNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:singleLine="true"
+                android:text="@string/order_number"
+                android:textColor="@color/black_dan"
+                android:textSize="@dimen/_30px_in720p" />
+
+            <TextView
+                android:id="@+id/orderTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
+                android:text="2018.05.30 12:30:20"
+                android:textColor="@color/green_1"
+                android:textSize="@dimen/_30px_in720p" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/_20px_in720p"
+            android:paddingEnd="@dimen/_15px_in720p"
+            android:paddingStart="@dimen/_15px_in720p"
+            android:paddingTop="@dimen/_5px_in720p">
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_oil_gun" />
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_oil_number" />
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_number_of_liters" />
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_price" />
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_total_price" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/_10px_in720p"
+            android:paddingEnd="@dimen/_15px_in720p"
+            android:paddingStart="@dimen/_15px_in720p"
+            android:paddingTop="@dimen/_10px_in720p">
+
+            <TextView
+                android:id="@+id/orderOilGun"
+                style="@style/OrderTitleStyle" />
+
+            <TextView
+                android:id="@+id/orderOilNumber"
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_oil_number_unit" />
+
+            <TextView
+                android:id="@+id/OrderNumberOfLiters"
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_number_of_liters_unit" />
+
+            <TextView
+                android:id="@+id/orderPrice"
+                style="@style/OrderTitleStyle" />
+
+            <TextView
+                android:id="@+id/orderTotalPrice"
+                style="@style/OrderTitleStyle" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_20px_in720p"
+        android:paddingEnd="@dimen/_20px_in720p"
+        >
+
+        <include
+            layout="@layout/comment_item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginTop="@dimen/_20px_in720p"
+            android:background="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_2px_in720p"/>
+
+    </LinearLayout>
+
+</LinearLayout>

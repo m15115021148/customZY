@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/x15"
+            android:paddingTop="@dimen/x15">
+
+            <TextView
+                android:id="@+id/orderNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:singleLine="true"
+                android:text="@string/order_number"
+                android:textColor="@color/black_dan"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                android:id="@+id/orderTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
+                android:textColor="@color/green_1"
+                android:textSize="@dimen/x30" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/x20"
+            android:paddingEnd="@dimen/x15"
+            android:paddingStart="@dimen/x15"
+            android:paddingTop="@dimen/x5">
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_goods_type" />
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_goods_name" />
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_price" />
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_goods_number" />
+
+            <TextView
+                style="@style/OrderTitleStyle"
+                android:text="@string/order_total_price" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:paddingBottom="@dimen/x10"
+            android:paddingEnd="@dimen/x15"
+            android:paddingStart="@dimen/x15"
+            android:paddingTop="@dimen/x10">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/comment_recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:overScrollMode="never"
+                android:scrollbars="none" />
+
+            <TextView
+                android:id="@+id/orderTotalPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingBottom="@dimen/x10"
+                android:paddingTop="@dimen/x10"
+                android:singleLine="true"
+                android:textColor="@color/red"
+                android:textSize="@dimen/x30" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

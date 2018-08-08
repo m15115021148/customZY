@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pop_txt_bg"
+    android:orientation="vertical"
+    tools:context=".ui.MainActivity">
+
+    <include
+        layout="@layout/include_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40px_in720p" />
+
+    <TextView
+        android:id="@+id/unpaid"
+        style="@style/HomePagerTextViewStyle"
+        android:background="@drawable/home_unpaid_bg"
+        android:text="@string/home_unpaid" />
+
+    <TextView
+        android:id="@+id/returns"
+        style="@style/HomePagerTextViewStyle"
+        android:background="@drawable/home_returns_bg"
+        android:text="@string/home_returns" />
+
+    <TextView
+        android:id="@+id/paid"
+        style="@style/HomePagerTextViewStyle"
+        android:background="@drawable/home_paid_bg"
+        android:text="@string/home_paid" />
+
+</LinearLayout>

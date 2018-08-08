@@ -1,0 +1,92 @@
+package com.bluemobi.zhongyou.adapter;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.bean.OrderBean;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder>{
+    private List<OrderBean.Orders> mList = new ArrayList<>();
+    private int mType = 0;
+
+    public void setData(List<OrderBean.Orders> list,int type){
+        this.mList = list;
+        this.mType = type;
+        this.notifyDataSetChanged();
+    }
+
+    public List<OrderBean.Orders> getData(){
+        return this.mList;
+    }
+
+    @Override
+    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_recyclerview_item_layout,null);
+        return new Holder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(Holder holder, int position) {
+        holder.initData(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mList.size();
+    }
+
+    public class Holder extends BaseViewHolder{
+        @BindView(R.id.orderGoodsType)
+        public TextView mGoodType;
+        @BindView(R.id.orderGoodsName)
+        public TextView mGoodsName;
+        @BindView(R.id.orderPrice)
+        public TextView mPrice;
+        @BindView(R.id.orderGoodsNumber)
+        public TextView mGoodsNumber;
+        private View mItemView;
+
+        public Holder(View itemView) {
+            super(itemView);
+            this.mItemView = itemView;
+        }
+
+        @Override
+        public void initData(int position){
+            OrderBean.Orders model = mList.get(position);
+
+            mGoodType.setText(model.getType());
+            if (mType == 0){//oils
+                mGoodsName.setText(
+                        String.format(
+                                mItemView.getContext().getResources().getString(R.string.order_oil_number_unit),
+                                Integer.parseInt(model.getName())
+                        )
+                );
+                mGoodsNumber.setText(
+                        String.format(
+                                mItemView.getContext().getResources().getString(R.string.order_number_of_liters_unit),
+                                model.getNumber()
+                        )
+                );
+            }else {//goods
+                mGoodsName.setText(model.getName());
+                mGoodsNumber.setText(String.valueOf(model.getNumber()));
+            }
+            mPrice.setText(String.valueOf(model.getPrice()));
+
+        }
+    }
+}

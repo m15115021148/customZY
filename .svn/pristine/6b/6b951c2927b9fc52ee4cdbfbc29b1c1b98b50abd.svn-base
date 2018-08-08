@@ -1,0 +1,18 @@
+package com.bluemobi.zhongyou.bean;
+
+import java.util.List;
+
+/**
+ * Created by ${chenM} on 2018/7/16.
+ */
+public abstract class BaseBean<T> {
+    private List<T> data;
+
+    public List<T> getData() {
+        return data;
+    }
+
+    public void setData(List<T> data) {
+        this.data = data;
+    }
+}

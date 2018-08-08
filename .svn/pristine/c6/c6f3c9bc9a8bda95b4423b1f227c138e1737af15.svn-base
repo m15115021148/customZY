@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">中油</string>
+
+    <!--sunmi printer -->
+    <!--instruction-->
+    <string name="toast_1">Transaction print,use the AIDL mode!</string>
+    <string name="toast_2">The service has been disconnected!</string>
+    <string name="toast_3">Bluetooth device is unavailable</string>
+    <string name="toast_4">Bluetooth device not detected. Please open Bluetooth!</string>
+    <string name="toast_5">Not Found InnterPrinter!</string>
+    <string name="toast_6">Bluetooth connect failed!</string>
+    <string name="toast_7"> Only a single Qr code is printed for the AIDL mode</string>
+    <string name="toast_8">Now QrCode size must be less than 7!</string>
+    <string name="toast_9">BarCode type or conent error!</string>
+
+    <string name="msg_camera_framework_bug">Sorry, the Android camera encountered a problem. You may need to restart the device.</string>
+    <string name="button_ok">OK</string>
+    <string name="viewfinderview_status_text1">将二维码/条码放入取景框内</string>
+    <string name="viewfinderview_status_text2">即可自动扫描</string>
+    <string name="capture_title">二维码扫描</string>
+
+    <string name="menu_unpaid">未支付</string>
+    <string name="menu_returns">退货</string>
+    <string name="menu_paid">已支付</string>
+
+    <string name="title">订单</string>
+
+    <string name="home_title">选择订单类型</string>
+    <string name="home_unpaid">未支付订单</string>
+    <string name="home_returns">退货订单</string>
+    <string name="home_paid">已支付未开发票订单</string>
+
+    <string name="oils">油品</string>
+    <string name="goods">商品</string>
+
+    <string name="unpaid_title">%1$s订单信息</string>
+    <string name="order_number">订单编号：%1$d</string>
+    <string name="order_oil_gun">油枪</string>
+    <string name="order_oil_number">油号</string>
+    <string name="order_number_of_liters">升数</string>
+    <string name="order_price">单价</string>
+    <string name="order_total_price">总价</string>
+    <string name="order_goods_type">类别</string>
+    <string name="order_goods_name">名称</string>
+    <string name="order_goods_number">数量</string>
+
+    <string name="order_oil_number_unit">%1$d#</string>
+    <string name="order_number_of_liters_unit">%1$dL</string>
+    <string name="payment_method">支付方式</string>
+    <string name="payment_1">支付宝</string>
+    <string name="payment_2">微信</string>
+    <string name="payment_3">银联云闪付</string>
+    <string name="payment_4">现金支付</string>
+    <string name="payment_5">油卡支付</string>
+    <string name="payment_6">银行卡支付</string>
+    <string name="payment_7">优惠券</string>
+
+    <string name="pay_success">订单支付成功</string>
+    <string name="pay_offer_money">已优惠：%1$.2f</string>
+    <string name="pay_real_money">剩余支付：%1$.2f</string>
+    <string name="pay_coupon_number">优惠券码：%1$d</string>
+    <string name="pay_coupon_used">已使用</string>
+    <string name="pay_success_coupon_money">优惠券使用：%1$.2f</string>
+    <string name="pay_success_oil_card_money">油卡/现金：%1$.2f</string>
+
+    <string name="pay_oil_card_title">输入金额</string>
+    <string name="pay_oil_card_method">油卡/现金支付</string>
+    <string name="pay_oil_card_input_money">输入支付金额：</string>
+    <string name="pay_oil_card_next_way">下一步</string>
+    <string name="pay_oil_card_flag">请输入金额</string>
+
+    <string name="returns_times">时间</string>
+    <string name="returns_title">退货订单列表</string>
+    <string name="returns_oil_card_money">现金支付：%1$.2f</string>
+    <string name="returns_other_money">支付宝：%1$.2f</string>
+    <string name="returns_operating">退货</string>
+
+    <string name="paid_title">未开票订单列表</string>
+    <string name="paid_print_ticket">打印小票</string>
+    <string name="paid_type">商品类型</string>
+
+    <string name="pick_dialog_title">选择时间：%1$s</string>
+    <string name="pick_dialog_sure">确定</string>
+    <string name="pick_dialog_cancel">取消</string>
+
+    <string name="goods_scan">扫描商品</string>
+    <string name="goods_list_title">输入商品数量</string>
+    <string name="goods_list_continue_scan">继续扫描</string>
+    <string name="goods_list_over">结算</string>
+</resources>

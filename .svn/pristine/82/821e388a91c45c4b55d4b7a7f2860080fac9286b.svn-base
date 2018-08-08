@@ -1,0 +1,26 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+
+import com.bluemobi.zhongyou.R;
+
+public class ReturnsActivity extends BaseActivity implements View.OnClickListener {
+    private ReturnsActivity mContext;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_returns;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+}

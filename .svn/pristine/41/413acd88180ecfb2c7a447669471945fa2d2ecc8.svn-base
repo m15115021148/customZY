@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/continueScan"
+        style="@style/GoodsListTextViewStyle"
+        android:layout_marginTop="@dimen/x60"
+        android:text="@string/goods_list_continue_scan" />
+
+    <TextView
+        android:id="@+id/over"
+        style="@style/GoodsListTextViewStyle"
+        android:layout_marginBottom="@dimen/x60"
+        android:layout_marginTop="@dimen/x40"
+        android:text="@string/goods_list_over" />
+
+
+</LinearLayout>

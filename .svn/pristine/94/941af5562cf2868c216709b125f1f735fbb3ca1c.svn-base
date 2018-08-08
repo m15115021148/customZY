@@ -1,0 +1,117 @@
+package com.bluemobi.zhongyou.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.bean.OrderBean;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class UnpaidOilsAdapter extends RecyclerView.Adapter<UnpaidOilsAdapter.Holder> {
+    private List<OrderBean> mList = new ArrayList();
+    private Context mContext;
+    private OnUnpaidOilsCallBack mCallBack;
+
+    public UnpaidOilsAdapter(Context context, OnUnpaidOilsCallBack callBack){
+        this.mContext = context;
+        this.mCallBack = callBack;
+    }
+
+    public void setData(List<OrderBean> list){
+        this.mList = list;
+        this.notifyDataSetChanged();
+    }
+
+    public List<OrderBean> getData(){
+        return this.mList;
+    }
+
+    public interface OnUnpaidOilsCallBack{
+        void onItemClickListener(int position);
+    }
+
+    @Override
+    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.unpaid_oils_item_layout,null);
+        return new Holder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(Holder holder, int position) {
+        holder.initData(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mList.size();
+    }
+
+    public class Holder extends BaseViewHolder{
+        @BindView(R.id.layout)
+        public LinearLayout mLayout;
+        @BindView(R.id.orderNumber)
+        public TextView mOrderNumber;
+        @BindView(R.id.orderTime)
+        public TextView mOrderTime;
+        @BindView(R.id.orderTotalPrice)
+        public TextView mOrderTotalPrice;
+        @BindView(R.id.orderOilGun)
+        public TextView mOilsGun;
+        @BindView(R.id.orderOilNumber)
+        public TextView mOilsNumber;
+        @BindView(R.id.orderOilsLiters)
+        public TextView mOilsLiters;
+        @BindView(R.id.orderPrice)
+        public TextView mPrice;
+
+        public Holder(View itemView) {
+            super(itemView);
+        }
+
+        public void initData(final int position){
+            OrderBean model = mList.get(position);
+            mOrderNumber.setText(
+                    String.format(
+                            mContext.getResources().getString(R.string.order_number),
+                            model.getOrderNumber()
+                    )
+            );
+            mOrderTime.setText(model.getOrderTime());
+            mOrderTotalPrice.setText(String.valueOf(model.getTotalPrice()));
+            mOilsGun.setText(String.valueOf(model.getData().get(0).getType()));
+            mOilsNumber.setText(
+                    String.format(
+                            mContext.getResources().getString(R.string.order_oil_number_unit),
+                            Integer.parseInt(model.getData().get(0).getName())
+                    )
+            );
+            mOilsLiters.setText(
+                    String.format(
+                            mContext.getResources().getString(R.string.order_number_of_liters_unit),
+                            model.getData().get(0).getNumber()
+                    )
+            );
+            mPrice.setText(String.valueOf(model.getData().get(0).getPrice()));
+
+            mLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mCallBack!=null)mCallBack.onItemClickListener(position);
+                }
+            });
+        }
+    }
+}

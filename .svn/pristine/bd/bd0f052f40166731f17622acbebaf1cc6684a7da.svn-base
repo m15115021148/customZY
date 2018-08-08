@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pop_txt_bg"
+    android:orientation="vertical"
+    tools:context=".activity.PaymentOilCardMoneyActivity">
+
+    <include
+        layout="@layout/include_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/typeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/x20"
+        android:paddingStart="@dimen/x20">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/offerMoney"
+        style="@style/PaymentCouponTextViewStyle"
+        android:text="@string/pay_offer_money"
+        android:textColor="@color/blue_dan" />
+
+    <TextView
+        android:id="@+id/oilCardMoney"
+        style="@style/PaymentCouponTextViewStyle"
+        android:text="@string/pay_success_oil_card_money"
+        android:textColor="@color/blue_dan" />
+
+    <TextView
+        android:id="@+id/realMoney"
+        style="@style/PaymentCouponTextViewStyle"
+        android:text="@string/pay_real_money" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never" />
+
+
+</LinearLayout>

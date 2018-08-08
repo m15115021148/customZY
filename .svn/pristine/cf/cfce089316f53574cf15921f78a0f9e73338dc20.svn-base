@@ -1,0 +1,158 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.content.Intent;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.PaymentMethodAdapter;
+import com.bluemobi.zhongyou.adapter.UnpaidGoodsAdapter;
+import com.bluemobi.zhongyou.log.LogUtil;
+import com.bluemobi.zhongyou.model.OrderGoodsModel;
+import com.bluemobi.zhongyou.model.TypeModel;
+import com.bluemobi.zhongyou.scan.android.CaptureActivity;
+import com.bluemobi.zhongyou.util.DateUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindArray;
+import butterknife.BindView;
+
+public class GoodsListDetailActivity extends BaseActivity implements
+        UnpaidGoodsAdapter.OnUnpaidGoodsCallBack ,PaymentMethodAdapter.OnPaymentMethodCallBack {
+    private GoodsListDetailActivity mContext;
+    @BindView(R.id.title)
+    public TextView mTitle;
+    @BindView(R.id.goods_recyclerView)
+    public RecyclerView mGoodsRecyclerView;
+    @BindView(R.id.payment_recyclerView)
+    public RecyclerView mPaymentRecyclerView;
+    private UnpaidGoodsAdapter mGoodsAdapter;
+    private List<OrderGoodsModel.Goods> mGoodsList = new ArrayList<>();
+    private int[] res = {
+            R.drawable.pay_1,R.drawable.pay_2, R.drawable.pay_3, R.drawable.pay_4,
+            R.drawable.pay_5,R.drawable.pay_6, R.drawable.pay_7
+    };
+    @BindArray(R.array.PaymentArray)
+    public String[] mArray;
+    private PaymentMethodAdapter mPaymentAdapter;
+    private int currPosition = 0;
+    private static final int REQUEST_CODE_SCAN = 0x0000;
+    private static final int REQUEST_CODE_SCAN_COUPON = 0x0001;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_goods_list_detail;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+        mTitle.setText(
+                String.format(getResources().getString(R.string.unpaid_title), getResources().getString(R.string.goods))
+        );
+        mGoodsList = JSON.parseArray(getIntent().getStringExtra("data"),OrderGoodsModel.Goods.class);
+        initGoodsListData();
+        initPaymentData();
+    }
+
+    private void initGoodsListData(){
+        mGoodsRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mGoodsAdapter = new UnpaidGoodsAdapter(mContext,this);
+        mGoodsRecyclerView.setAdapter(mGoodsAdapter);
+        mGoodsAdapter.setData(getGoodsData());
+    }
+
+    private void initPaymentData(){
+        mPaymentRecyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        mPaymentAdapter = new PaymentMethodAdapter(this);
+        mPaymentRecyclerView.setAdapter(mPaymentAdapter);
+        mPaymentAdapter.setData(getPaymentData(mArray,res));
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
+    }
+
+    @Override
+    public void onItemPaymentListener(int position) {
+        currPosition = position;
+        switch (position){
+            case 0:
+            case 1:
+            case 2:
+                Intent intent = new Intent(mContext, CaptureActivity.class);
+                startActivityForResult(intent,REQUEST_CODE_SCAN);
+                break;
+            case 3:
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6://coupon pay
+                Intent coupon = new Intent(mContext, CaptureActivity.class);
+                startActivityForResult(coupon,REQUEST_CODE_SCAN_COUPON);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK){
+            if (data != null) {
+                String content = data.getStringExtra(CaptureActivity.RESULT_CONTENT);
+                LogUtil.d(content);
+                Intent intent = new Intent(mContext,PaymentSuccessActivity.class);
+                intent.putExtra("type",1);
+                intent.putExtra("model",mGoodsAdapter.getData().get(0));
+                startActivity(intent);
+                mContext.finish();
+            }
+        }
+        if (requestCode == REQUEST_CODE_SCAN_COUPON && resultCode == RESULT_OK){
+            if (data != null) {
+                List<TypeModel> list = mPaymentAdapter.getData();
+                list.remove(currPosition);
+                String content = data.getStringExtra(CaptureActivity.RESULT_CONTENT);
+                LogUtil.d(content);
+                Intent intent = new Intent(mContext,PayCouponActivity.class);
+                intent.putExtra("type",1);
+                intent.putExtra("model",mGoodsAdapter.getData().get(0));
+                intent.putExtra("data", JSON.toJSONString(list));
+                startActivity(intent);
+                mContext.finish();
+            }
+        }
+    }
+
+    private List<OrderGoodsModel> getGoodsData(){
+        List<OrderGoodsModel> list = new ArrayList<>();
+        double totalPrice = 0;
+        OrderGoodsModel model = new OrderGoodsModel();
+        model.setOrderNumber(1245789);
+        model.setOrderTime(DateUtil.getCurrentDate().replace("-","."));
+        model.setGoods(mGoodsList);
+        for (OrderGoodsModel.Goods g:mGoodsList){
+            totalPrice = totalPrice+(g.getPrice()*g.getNumber());
+        }
+        model.setTotalPrice(totalPrice);
+        list.add(model);
+        return list;
+    }
+
+    private List<TypeModel> getPaymentData(String[] str, int[] res){
+        List<TypeModel> list = new ArrayList<>();
+        for (int i=0;i<str.length;i++){
+            TypeModel model = new TypeModel();
+            model.setName(str[i]);
+            model.setRes(res[i]);
+            list.add(model);
+        }
+        return list;
+    }
+}

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pop_txt_bg"
+    android:orientation="vertical"
+    android:overScrollMode="never"
+    tools:context=".activity.PaymentSuccessActivity">
+
+    <include
+        layout="@layout/include_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/typeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:paddingEnd="@dimen/x20"
+        android:paddingStart="@dimen/x20">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/offerMoney"
+        style="@style/PaymentSuccessTextViewStyle"
+        android:text="@string/pay_success_coupon_money" />
+
+    <TextView
+        android:id="@+id/oilCardMoney"
+        style="@style/PaymentSuccessTextViewStyle"
+        android:text="@string/pay_success_oil_card_money" />
+
+    <TextView
+        android:id="@+id/realMoney"
+        style="@style/PaymentSuccessTextViewStyle"
+        android:text="@string/pay_real_money" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x2"
+        android:layout_marginEnd="@dimen/x20"
+        android:layout_marginStart="@dimen/x20"
+        android:layout_marginTop="@dimen/x20"
+        android:background="@color/grey" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/x80"
+        android:text="@string/pay_success"
+        android:textColor="@color/blue_dan"
+        android:textSize="@dimen/x40" />
+
+</LinearLayout>

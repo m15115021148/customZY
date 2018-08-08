@@ -1,0 +1,132 @@
+package com.bluemobi.zhongyou.fragment;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.UnpaidGoodsAdapter;
+import com.bluemobi.zhongyou.log.LogUtil;
+import com.bluemobi.zhongyou.model.OrderGoodsModel;
+import com.bluemobi.zhongyou.scan.android.CaptureActivity;
+import com.bluemobi.zhongyou.activity.GoodsListActivity;
+import com.bluemobi.zhongyou.activity.PaymentMethodActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+import static android.app.Activity.RESULT_OK;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class GoodsFragment extends BaseFragment implements UnpaidGoodsAdapter.OnUnpaidGoodsCallBack {
+    private Context mContext;
+    @BindView(R.id.recyclerView)
+    public RecyclerView mRecyclerView;
+    private UnpaidGoodsAdapter mAdapter;
+    @BindView(R.id.scan)
+    public TextView mScan;
+
+    private static final int REQUEST_CODE_SCAN = 0x0000;
+
+    @Override
+    protected int setContentView() {
+        return R.layout.fragment_goods;
+    }
+
+    @Override
+    protected void startLoad() {
+//        if (mAdapter!=null)mAdapter.setData(getData());
+    }
+
+    @Override
+    protected void initData() {
+        mContext = getContext();
+        initRecyclerViewData();
+
+        mScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, CaptureActivity.class);
+                startActivityForResult(intent,REQUEST_CODE_SCAN);
+            }
+        });
+    }
+
+    private void initRecyclerViewData(){
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mAdapter = new UnpaidGoodsAdapter(mContext,this);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
+        Intent intent = new Intent(mContext, PaymentMethodActivity.class);
+        intent.putExtra("type",1);//0 oils  ;  1 goods
+        intent.putExtra("model",mAdapter.getData().get(position));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK){
+            if (data != null) {
+                String content = data.getStringExtra(CaptureActivity.RESULT_CONTENT);
+                LogUtil.d(content);
+                Intent intent = new Intent(mContext, GoodsListActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
+
+    private List<OrderGoodsModel> getData(){
+        List<OrderGoodsModel> list = new ArrayList();
+
+        OrderGoodsModel m = new OrderGoodsModel();
+        m.setOrderNumber(123456);
+        m.setOrderTime("2018-05-30 15:20:12");
+        m.setTotalPrice(100);
+
+        List<OrderGoodsModel.Goods> l = new ArrayList<>();
+        OrderGoodsModel.Goods g = new OrderGoodsModel.Goods();
+        g.setType("汽车用品");
+        g.setName("燃油添加剂");
+        g.setPrice(10);
+        g.setNumber(10);
+        l.add(g);
+        m.setGoods(l);
+
+        OrderGoodsModel m1 = new OrderGoodsModel();
+        m1.setOrderNumber(123457);
+        m1.setOrderTime("2018-05-30 16:20:12");
+        m1.setTotalPrice(75);
+
+        List<OrderGoodsModel.Goods> l1 = new ArrayList<>();
+        OrderGoodsModel.Goods g1 = new OrderGoodsModel.Goods();
+        g1.setType("汽车用品");
+        g1.setName("燃油添加剂");
+        g1.setPrice(10);
+        g1.setNumber(5);
+        l1.add(g1);
+
+        OrderGoodsModel.Goods g2 = new OrderGoodsModel.Goods();
+        g2.setType("饮料");
+        g2.setName("矿泉水");
+        g2.setPrice(5);
+        g2.setNumber(5);
+        l1.add(g2);
+        m1.setGoods(l1);
+
+        list.add(m);
+        list.add(m1);
+        return list;
+    }
+}

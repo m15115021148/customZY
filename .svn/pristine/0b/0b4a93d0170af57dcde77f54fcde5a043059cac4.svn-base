@@ -1,0 +1,94 @@
+package com.bluemobi.zhongyou.bean;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * Created by ${chenM} on 2018/7/16.
+ */
+public class OrderBean implements Serializable{
+    private int type;//0 oils ;1 goods
+    private int orderNumber;
+    private String orderTime;
+    private double totalPrice;
+    private List<Orders> data;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public List<Orders> getData() {
+        return data;
+    }
+
+    public void setData(List<Orders> data) {
+        this.data = data;
+    }
+
+    public static class Orders implements Serializable {
+        private String type;//oils gun ; goods type
+        private String name;//oils number ; goods name
+        private double price;
+        private int number;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        public void setNumber(int number) {
+            this.number = number;
+        }
+    }
+}

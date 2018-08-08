@@ -1,0 +1,160 @@
+package com.bluemobi.zhongyou.activity;
+
+import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.GoodsListAdapter;
+import com.bluemobi.zhongyou.log.LogUtil;
+import com.bluemobi.zhongyou.bean.OrderGoodsBean;
+import com.bluemobi.zhongyou.mvp.presenter.base.Presenter;
+import com.bluemobi.zhongyou.util.ToastUtil;
+import com.bluemobi.zhongyou.view.recyclerview.HeaderAndFooterWrapper;
+import com.bluemobi.zhongyou.view.recyclerview.LRecyclerView;
+import com.bluemobi.zhongyou.view.recyclerview.SwipeMenuView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+public class GoodsListActivity extends BaseActivity implements View.OnClickListener,GoodsListAdapter.OnGoodsListCallBack {
+    private GoodsListActivity mContext;
+    @BindView(R.id.title)
+    public TextView mTitle;
+    public TextView mContinueScan;
+    public TextView mOver;
+    @BindView(R.id.recyclerView)
+    public LRecyclerView mRecyclerView;
+    private GoodsListAdapter mAdapter;
+
+    private static final int REQUEST_CODE_SCAN = 0x0000;
+    private List<OrderGoodsBean.Goods> mList = new ArrayList<>();
+    private HeaderAndFooterWrapper mFooterAdapter;
+    private HeaderAndFooterWrapper mHeaderAdapter;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_goods_list;
+    }
+
+    @Override
+    protected Presenter getModelView() {
+        return null;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+        mTitle.setText(R.string.goods_list_title);
+        initListData();
+        mList.clear();
+        mList = getData();
+        mAdapter.setData(mList);
+    }
+
+    private void initListData(){
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mAdapter = new GoodsListAdapter(this,this);
+
+        //add header view
+        mHeaderAdapter = new HeaderAndFooterWrapper(mAdapter);
+        View header = getLayoutInflater().inflate(R.layout.goods_list_header_layout,null,false);
+        header.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+        mHeaderAdapter.addHeaderView(header);
+
+        //add footer view
+        mFooterAdapter = new HeaderAndFooterWrapper(mHeaderAdapter);
+        View view = getLayoutInflater().inflate(R.layout.goods_list_footer_layout,null,false);
+        view.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+        mContinueScan = view.findViewById(R.id.continueScan);
+        mContinueScan.setOnClickListener(this);
+        mOver = view.findViewById(R.id.over);
+        mOver.setOnClickListener(this);
+        mFooterAdapter.addFootView(view);
+
+        mRecyclerView.setAdapter(mFooterAdapter);
+    }
+
+    private List<OrderGoodsBean.Goods> getData(){
+        List<OrderGoodsBean.Goods> list = new ArrayList<>();
+
+        OrderGoodsBean.Goods goods = new OrderGoodsBean.Goods();
+        goods.setName("燃油添加剂");
+        goods.setType("汽车用品");
+        goods.setPrice(100);
+        goods.setNumber(1);
+        list.add(goods);
+
+        return list;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mContinueScan){
+            Intent intent = new Intent(mContext, CaptureActivity.class);
+            startActivityForResult(intent,REQUEST_CODE_SCAN);
+        }
+        if (v == mOver){
+            if (mAdapter.getData().size()>0){
+                LogUtil.w("data:"+JSON.toJSONString(mAdapter.getData()));
+                LogUtil.w("over:"+JSON.toJSONString(mList));
+                Intent intent = new Intent(mContext,GoodsListDetailActivity.class);
+                intent.putExtra("data", JSON.toJSONString(mList));
+                startActivity(intent);
+                mContext.finish();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK){
+            if (data != null) {
+                String content = data.getStringExtra(CaptureActivity.RESULT_CONTENT);
+                LogUtil.d(content);
+                LogUtil.d(JSON.toJSONString(mAdapter.getData()));
+
+                OrderGoodsBean.Goods goods = new OrderGoodsBean.Goods();
+                goods.setName("矿泉水");
+                goods.setType("饮料");
+                goods.setPrice(5);
+                goods.setNumber(1);
+
+                mList.add(goods);
+                LogUtil.w(JSON.toJSONString(mList));
+                if (mAdapter!=null){
+                    mAdapter.setData(mList);
+                    mAdapter.notifyDataSetChanged();
+                    mFooterAdapter.notifyDataSetChanged();
+                }
+                LogUtil.e(JSON.toJSONString(mAdapter.getData()));
+            }
+        }
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
+        ToastUtil.showBottomShort(mAdapter.getData().get(position).getName());
+    }
+
+    @Override
+    public void onItemDeleteListener(SwipeMenuView view, int position) {
+        view.quickClose();
+        mAdapter.getData().remove(position);
+        mAdapter.notifyDataSetChanged();
+        mFooterAdapter.notifyDataSetChanged();
+    }
+}

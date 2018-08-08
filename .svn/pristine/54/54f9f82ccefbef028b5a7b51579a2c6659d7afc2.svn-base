@@ -1,0 +1,89 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.UnpaidFragmentAdapter;
+import com.bluemobi.zhongyou.fragment.BaseFragment;
+import com.bluemobi.zhongyou.fragment.GoodsFragment;
+import com.bluemobi.zhongyou.fragment.OilsFragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindArray;
+import butterknife.BindView;
+import butterknife.BindViews;
+
+public class UnpaidActivity extends BaseActivity implements View.OnClickListener,TabLayout.OnTabSelectedListener {
+    private UnpaidActivity mContext;
+    @BindView(R.id.title)
+    public TextView mTitle;
+    @BindView(R.id.tabLayout)
+    public TabLayout mTabLayout;
+    @BindView(R.id.viewPager)
+    public ViewPager mViewPager;//viewPager
+    private List<BaseFragment> mFragmentList = new ArrayList<>();//fragment集合
+    private UnpaidFragmentAdapter mFragmentAdapter;
+    @BindArray(R.array.UnpaidArray)
+    public String[] mData;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_unpaid;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+        mTitle.setText(String.format(getResources().getString(R.string.unpaid_title),mData[0]));
+        initTabLayout();
+    }
+
+    private void initTabLayout() {
+        mFragmentList.add(new OilsFragment());
+        mFragmentList.add(new GoodsFragment());
+
+        mTabLayout.removeAllTabs();
+        mTabLayout.setTabMode(TabLayout.MODE_FIXED);//设置tab模式，当前为系统默认模式
+        mViewPager.setOffscreenPageLimit(1);
+        mFragmentAdapter = new UnpaidFragmentAdapter(getSupportFragmentManager(), mData, mFragmentList, mContext);
+        mViewPager.setAdapter(mFragmentAdapter);
+        //绑定ViewPager
+        mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setCurrentItem(0);
+        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = mTabLayout.getTabAt(i);
+            if (tab != null) {
+                View v = mFragmentAdapter.getView(i);
+                if (i == 0) {//默认第一个选中
+                    v.setSelected(true);
+                }
+                tab.setCustomView(v);
+            }
+        }
+        mTabLayout.addOnTabSelectedListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        mViewPager.setCurrentItem(tab.getPosition());
+        mTitle.setText(String.format(getResources().getString(R.string.unpaid_title),mData[tab.getPosition()]));
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+    }
+}

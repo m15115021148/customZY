@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/x20">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/x15">
+
+        <TextView
+            style="@style/OrderTitleStyle"
+            android:text="@string/order_goods_type" />
+
+        <TextView
+            style="@style/OrderTitleStyle"
+            android:text="@string/order_goods_name" />
+
+        <TextView
+            style="@style/OrderTitleStyle"
+            android:text="@string/order_price" />
+
+        <TextView
+            style="@style/OrderTitleStyle"
+            android:text="@string/order_goods_number" />
+
+        <TextView
+            style="@style/OrderTitleStyle"
+            android:text="@string/order_total_price" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x2"
+        android:layout_marginEnd="@dimen/x20"
+        android:layout_marginStart="@dimen/x20"
+        android:background="@color/pop_txt_bg" />
+
+    <com.bluemobi.zhongyou.view.recyclerview.LRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never" />
+
+</LinearLayout>

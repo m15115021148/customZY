@@ -1,0 +1,39 @@
+package com.bluemobi.zhongyou.http.service;
+
+
+
+import com.bluemobi.zhongyou.http.retrofit.RetrofitHelper;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+
+/**
+ * <p>Description:
+ *
+ * <p>Created by chenmeng on 2017/3/29.
+ */
+
+public class HttpManager {
+
+    public static ApiService getApiService() {
+        return RetrofitHelper.getInstance().create(ApiService.class);
+    }
+
+    /**
+     * @param type 1 优惠券  ； 2  发票
+     * @return
+     */
+    public static ApiService getApiService(int type){
+        return RetrofitHelper.getInstance(type).create(ApiService.class);
+    }
+
+    /**
+     * body传递参数
+     * @param data json格式
+     * @return
+     */
+    public static RequestBody getParameter(String data){
+        return RequestBody.create(MediaType.parse("application/json"), data);
+    }
+
+}

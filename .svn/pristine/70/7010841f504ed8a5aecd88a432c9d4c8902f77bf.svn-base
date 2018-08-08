@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pop_txt_bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context=".ui.GoodsListActivity">
+
+    <include
+        layout="@layout/include_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:overScrollMode="never">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
+
+            <TextView
+                android:id="@+id/continueScan"
+                style="@style/GoodsListTextViewStyle"
+                android:layout_marginTop="@dimen/x60"
+                android:text="@string/goods_list_continue_scan" />
+
+            <TextView
+                android:id="@+id/over"
+                style="@style/GoodsListTextViewStyle"
+                android:layout_marginBottom="@dimen/x60"
+                android:layout_marginTop="@dimen/x40"
+                android:text="@string/goods_list_over" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

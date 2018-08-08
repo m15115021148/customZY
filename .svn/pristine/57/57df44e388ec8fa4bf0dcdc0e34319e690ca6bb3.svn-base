@@ -1,0 +1,112 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.content.Intent;
+import android.view.View;
+import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.GoodsListAdapter;
+import com.bluemobi.zhongyou.log.LogUtil;
+import com.bluemobi.zhongyou.model.OrderGoodsModel;
+import com.bluemobi.zhongyou.scan.android.CaptureActivity;
+import com.bluemobi.zhongyou.view.CustomListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+public class GoodsListActivity extends BaseActivity implements View.OnClickListener{
+    private GoodsListActivity mContext;
+    @BindView(R.id.title)
+    public TextView mTitle;
+    @BindView(R.id.continueScan)
+    public TextView mContinueScan;
+    @BindView(R.id.over)
+    public TextView mOver;
+    @BindView(R.id.listView)
+    public CustomListView mLv;
+    private GoodsListAdapter mAdapter;
+
+    private static final int REQUEST_CODE_SCAN = 0x0000;
+    private List<OrderGoodsModel.Goods> mList = new ArrayList<>();
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_goods_list;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+        mTitle.setText(R.string.goods_list_title);
+        mContinueScan.setOnClickListener(this);
+        mOver.setOnClickListener(this);
+        initListView();
+        mList.clear();
+        mList = getData();
+        mAdapter.setData(mList);
+    }
+
+    private void initListView(){
+        mAdapter = new GoodsListAdapter(this);
+        mLv.setAdapter(mAdapter);
+    }
+
+    private List<OrderGoodsModel.Goods> getData(){
+        List<OrderGoodsModel.Goods> list = new ArrayList<>();
+
+        OrderGoodsModel.Goods goods = new OrderGoodsModel.Goods();
+        goods.setName("燃油添加剂");
+        goods.setType("汽车用品");
+        goods.setPrice(100);
+        goods.setNumber(1);
+        list.add(goods);
+
+        return list;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mContinueScan){
+            Intent intent = new Intent(mContext, CaptureActivity.class);
+            startActivityForResult(intent,REQUEST_CODE_SCAN);
+        }
+        if (v == mOver){
+            LogUtil.w("data:"+JSON.toJSONString(mAdapter.getData()));
+            LogUtil.w("over:"+JSON.toJSONString(mList));
+            Intent intent = new Intent(mContext,GoodsListDetailActivity.class);
+            intent.putExtra("data", JSON.toJSONString(mList));
+            startActivity(intent);
+            mContext.finish();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK){
+            if (data != null) {
+                String content = data.getStringExtra(CaptureActivity.RESULT_CONTENT);
+                LogUtil.d(content);
+                LogUtil.d(JSON.toJSONString(mAdapter.getData()));
+
+                OrderGoodsModel.Goods goods = new OrderGoodsModel.Goods();
+                goods.setName("矿泉水");
+                goods.setType("饮料");
+                goods.setPrice(5);
+                goods.setNumber(1);
+
+                mList.add(goods);
+                LogUtil.w(JSON.toJSONString(mList));
+                if (mAdapter!=null){
+                    mAdapter.setData(mList);
+                    mAdapter.notifyDataSetChanged();
+                }
+                LogUtil.e(JSON.toJSONString(mAdapter.getData()));
+            }
+        }
+    }
+
+}

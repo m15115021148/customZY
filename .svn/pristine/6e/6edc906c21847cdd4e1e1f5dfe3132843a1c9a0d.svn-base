@@ -1,0 +1,125 @@
+package com.bluemobi.zhongyou.fragment;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.UnpaidGoodsAdapter;
+import com.bluemobi.zhongyou.model.OrderModel;
+import com.bluemobi.zhongyou.ui.PaymentMethodActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class GoodsFragment extends BaseFragment implements UnpaidGoodsAdapter.OnUnpaidGoodsCallBack {
+    private Context mContext;
+    @BindView(R.id.recyclerView)
+    public RecyclerView mRecyclerView;
+    private UnpaidGoodsAdapter mAdapter;
+
+    @Override
+    protected int setContentView() {
+        return R.layout.fragment_goods;
+    }
+
+    @Override
+    protected void startLoad() {
+        if (mAdapter!=null)mAdapter.setData(getData());
+    }
+
+    @Override
+    protected void initData() {
+        mContext = getContext();
+        initRecyclerViewData();
+    }
+
+    private void initRecyclerViewData(){
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mAdapter = new UnpaidGoodsAdapter(mContext,this);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
+        Intent intent = new Intent(mContext, PaymentMethodActivity.class);
+        startActivity(intent);
+    }
+
+    private List<OrderModel> getData(){
+        List<OrderModel> list = new ArrayList();
+
+        OrderModel model = new OrderModel();
+        model.setNumber(123456);
+        model.setTime("2018-05-30 14:20:20");
+        model.setTotalPrice(50);
+        List<OrderModel.Order> l = new ArrayList<>();
+        OrderModel.Order o = new OrderModel.Order();
+        o.setOilGun(1);
+        o.setOilNumber(95);
+        o.setNumberOfLiters(50);
+        o.setPrice(50);
+        l.add(o);
+        model.setOrders(l);
+
+        OrderModel model1 = new OrderModel();
+        model1.setNumber(123457);
+        model1.setTime("2018-05-30 14:30:20");
+        model1.setTotalPrice(150);
+        List<OrderModel.Order> l1 = new ArrayList<>();
+        OrderModel.Order o1 = new OrderModel.Order();
+        o1.setOilGun(2);
+        o1.setOilNumber(95);
+        o1.setNumberOfLiters(50);
+        o1.setPrice(50);
+        l1.add(o1);
+
+        OrderModel.Order o2 = new OrderModel.Order();
+        o2.setOilGun(3);
+        o2.setOilNumber(92);
+        o2.setNumberOfLiters(100);
+        o2.setPrice(100);
+        l1.add(o2);
+
+        model1.setOrders(l1);
+
+        OrderModel model2 = new OrderModel();
+        model2.setNumber(123458);
+        model2.setTime("2018-05-30 15:30:20");
+        model2.setTotalPrice(350);
+        List<OrderModel.Order> l2 = new ArrayList<>();
+        OrderModel.Order o3 = new OrderModel.Order();
+        o3.setOilGun(4);
+        o3.setOilNumber(95);
+        o3.setNumberOfLiters(50);
+        o3.setPrice(50);
+        l2.add(o3);
+
+        OrderModel.Order o4 = new OrderModel.Order();
+        o4.setOilGun(5);
+        o4.setOilNumber(98);
+        o4.setNumberOfLiters(100);
+        o4.setPrice(100);
+        l2.add(o4);
+
+        OrderModel.Order o5 = new OrderModel.Order();
+        o5.setOilGun(6);
+        o5.setOilNumber(99);
+        o5.setNumberOfLiters(60);
+        o5.setPrice(200);
+        l2.add(o5);
+
+        model2.setOrders(l2);
+
+        list.add(model);
+        list.add(model1);
+        list.add(model2);
+        return list;
+    }
+}

@@ -1,0 +1,85 @@
+package com.bluemobi.zhongyou.model;
+
+import java.util.List;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class OrderModel {
+    private int number;
+    private String time;
+    private double totalPrice;
+    private List<Order> orders;
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public static class Order{
+        private int oilGun;
+        private int oilNumber;
+        private int numberOfLiters;
+        private double price;
+
+        public int getOilGun() {
+            return oilGun;
+        }
+
+        public void setOilGun(int oilGun) {
+            this.oilGun = oilGun;
+        }
+
+        public int getOilNumber() {
+            return oilNumber;
+        }
+
+        public void setOilNumber(int oilNumber) {
+            this.oilNumber = oilNumber;
+        }
+
+        public int getNumberOfLiters() {
+            return numberOfLiters;
+        }
+
+        public void setNumberOfLiters(int numberOfLiters) {
+            this.numberOfLiters = numberOfLiters;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
+        }
+    }
+
+}

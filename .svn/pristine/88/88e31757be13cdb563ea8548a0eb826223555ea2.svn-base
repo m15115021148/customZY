@@ -1,0 +1,24 @@
+package com.bluemobi.zhongyou.fragment;
+
+import com.bluemobi.zhongyou.R;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class GoodsFragment extends BaseFragment {
+
+    @Override
+    protected int setContentView() {
+        return R.layout.fragment_goods;
+    }
+
+    @Override
+    protected void startLoad() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+}

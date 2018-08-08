@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="MainMenuArray">
+        <item>@string/home_unpaid</item>
+        <item>@string/home_returns</item>
+        <item>@string/home_paid</item>
+    </string-array>
+
+    <string-array name="UnpaidArray">
+        <item>@string/oils</item>
+        <item>@string/goods</item>
+    </string-array>
+
+    <string-array name="PaymentArray">
+        <item>@string/payment_1</item>
+        <item>@string/payment_2</item>
+        <item>@string/payment_3</item>
+        <item>@string/payment_4</item>
+        <item>@string/payment_5</item>
+        <item>@string/payment_6</item>
+        <item>@string/payment_7</item>
+    </string-array>
+
+    <string-array name="PaidListArray">
+        <item>@string/all</item>
+        <item>@string/oils</item>
+        <item>@string/goods</item>
+    </string-array>
+</resources>

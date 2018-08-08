@@ -1,0 +1,132 @@
+package com.bluemobi.zhongyou.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.bean.OrderBean;
+import com.bluemobi.zhongyou.bean.TypeBean;
+
+import java.util.List;
+
+import butterknife.BindView;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class GoodsListDetailAdapter extends RecyclerView.Adapter<BaseViewHolder>{
+    private Context mContext;
+    private SparseArray mArray = new SparseArray<>();
+
+    private static final int VIEW_TYPE_CONTENT = 0x001;
+    private static final int VIEW_TYPE_PAYMENT = 0x002;
+
+    private PaymentMethodAdapter.OnPaymentMethodCallBack mCallBack;
+
+    public GoodsListDetailAdapter(Context context, PaymentMethodAdapter.OnPaymentMethodCallBack callBack){
+        this.mContext = context;
+        this.mCallBack = callBack;
+    }
+
+    public void setData(SparseArray array){
+        this.mArray = array;
+        this.notifyDataSetChanged();
+    }
+
+    public SparseArray getData(){
+        return this.mArray;
+    }
+
+    @Override
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_CONTENT){
+            View content = LayoutInflater.from(parent.getContext()).inflate(R.layout.unpaid_goods_item_layout,null);
+            return new ContentHolder(content);
+        }else if (viewType == VIEW_TYPE_PAYMENT){
+            View content = LayoutInflater.from(parent.getContext()).inflate(R.layout.goods_list_detail_item_layout,null);
+            return new PaymentHolder(content);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        holder.initData(position);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0){
+            return VIEW_TYPE_CONTENT;
+        }else if (position == 1){
+            return VIEW_TYPE_PAYMENT;
+        }
+        return super.getItemViewType(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mArray.size();
+    }
+
+    public class ContentHolder extends BaseViewHolder{
+        @BindView(R.id.comment_recyclerView)
+        public RecyclerView mRecyclerView;
+        private CommentAdapter mAdapter;
+        @BindView(R.id.orderNumber)
+        public TextView mOrderNumber;
+        @BindView(R.id.orderTime)
+        public TextView mOrderTime;
+        @BindView(R.id.orderTotalPrice)
+        public TextView mOrderTotalPrice;
+
+        public ContentHolder(View itemView) {
+            super(itemView);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+            mAdapter = new CommentAdapter();
+            mRecyclerView.setAdapter(mAdapter);
+        }
+
+        public void initData(int position){
+            OrderBean model = (OrderBean) mArray.get(position);
+            mAdapter.setData(model.getData(),model.getType());
+
+            mOrderNumber.setText(
+                    String.format(
+                            mContext.getResources().getString(R.string.order_number),
+                            model.getOrderNumber()
+                    )
+            );
+            mOrderTime.setText(model.getOrderTime());
+            mOrderTotalPrice.setText(String.valueOf(model.getTotalPrice()));
+        }
+
+    }
+
+    public class PaymentHolder extends BaseViewHolder{
+        @BindView(R.id.recyclerView)
+        public RecyclerView mRecyclerView;
+        private PaymentMethodAdapter mPaymentAdapter;
+
+        public PaymentHolder(View itemView) {
+            super(itemView);
+        }
+
+        public void initData(int position){
+            List<TypeBean> list = (List<TypeBean>) mArray.get(position);
+            mRecyclerView.setLayoutManager(new GridLayoutManager(mContext,3));
+            mPaymentAdapter = new PaymentMethodAdapter(mCallBack);
+            mRecyclerView.setAdapter(mPaymentAdapter);
+            mPaymentAdapter.setData(list);
+        }
+
+    }
+}

@@ -1,0 +1,151 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.ReturnsListAdapter;
+import com.bluemobi.zhongyou.model.OrderGoodsModel;
+import com.bluemobi.zhongyou.util.DateUtil;
+import com.bluemobi.zhongyou.view.DateListener;
+import com.bluemobi.zhongyou.view.TimeConfig;
+import com.bluemobi.zhongyou.view.TimeSelectorDialog;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+public class ReturnsActivity extends BaseActivity implements View.OnClickListener ,ReturnsListAdapter.OnReturnsCallBack{
+    private ReturnsActivity mContext;
+    @BindView(R.id.title)
+    public TextView mTitle;
+    @BindView(R.id.startTime)
+    public TextView mStartTime;
+    @BindView(R.id.beginTime)
+    public TextView mBeginTime;
+    @BindView(R.id.recyclerView)
+    public RecyclerView mRecyclerView;
+    private ReturnsListAdapter mAdapter;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_returns;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+        mTitle.setText(R.string.returns_title);
+        mStartTime.setOnClickListener(this);
+        mBeginTime.setOnClickListener(this);
+        mStartTime.setText(DateUtil.getCurrentTime());
+        mBeginTime.setText(DateUtil.getCurrentTime());
+        initRecyclerView();
+    }
+
+    private void initRecyclerView(){
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new ReturnsListAdapter(this,this);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setData(getData());
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mStartTime){
+            TimeSelectorDialog dialog = new TimeSelectorDialog(this);
+            dialog.setCurrentDate(DateUtil.getCurrentTime());
+            dialog.setIsShowtype(TimeConfig.YEAR_MONTH_DAY);
+            dialog.setStartYear(2000);
+            dialog.setDateListener(new DateListener() {
+                @Override
+                public void onReturnDate(String time,int year, int month, int day, int hour, int minute, int isShowType) {
+                    mStartTime.setText(time);
+                }
+                @Override
+                public void onReturnDate(String empty) {
+
+                }
+            });
+            dialog.show();
+        }
+        if (v == mBeginTime){
+            TimeSelectorDialog dialog = new TimeSelectorDialog(this);
+            dialog.setCurrentDate(DateUtil.getCurrentTime());
+            dialog.setIsShowtype(TimeConfig.YEAR_MONTH_DAY);
+            dialog.setStartYear(2000);
+            dialog.setDateListener(new DateListener() {
+                @Override
+                public void onReturnDate(String time,int year, int month, int day, int hour, int minute, int isShowType) {
+                    mBeginTime.setText(time);
+                }
+                @Override
+                public void onReturnDate(String empty) {
+
+                }
+            });
+            dialog.show();
+        }
+    }
+
+    @Override
+    public void onItemContentListener(int position) {
+
+    }
+
+    @Override
+    public void onReturnsListener(int position) {
+
+    }
+
+    @Override
+    public void onPrintTicketListener(int position) {
+
+    }
+
+    private List<OrderGoodsModel> getData(){
+        List<OrderGoodsModel> list = new ArrayList();
+
+        OrderGoodsModel m = new OrderGoodsModel();
+        m.setOrderNumber(123456);
+        m.setOrderTime("2018-05-30 15:20:12");
+        m.setTotalPrice(100);
+
+        List<OrderGoodsModel.Goods> l = new ArrayList<>();
+        OrderGoodsModel.Goods g = new OrderGoodsModel.Goods();
+        g.setType("汽车用品");
+        g.setName("燃油添加剂");
+        g.setPrice(10);
+        g.setNumber(10);
+        l.add(g);
+        m.setGoods(l);
+
+        OrderGoodsModel m1 = new OrderGoodsModel();
+        m1.setOrderNumber(123457);
+        m1.setOrderTime("2018-05-30 16:20:12");
+        m1.setTotalPrice(75);
+
+        List<OrderGoodsModel.Goods> l1 = new ArrayList<>();
+        OrderGoodsModel.Goods g1 = new OrderGoodsModel.Goods();
+        g1.setType("汽车用品");
+        g1.setName("燃油添加剂");
+        g1.setPrice(10);
+        g1.setNumber(5);
+        l1.add(g1);
+
+        OrderGoodsModel.Goods g2 = new OrderGoodsModel.Goods();
+        g2.setType("饮料");
+        g2.setName("矿泉水");
+        g2.setPrice(5);
+        g2.setNumber(5);
+        l1.add(g2);
+        m1.setGoods(l1);
+
+        list.add(m);
+        list.add(m1);
+        return list;
+    }
+}

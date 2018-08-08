@@ -1,0 +1,222 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.content.Intent;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.CommentAdapter;
+import com.bluemobi.zhongyou.adapter.PaymentMethodAdapter;
+import com.bluemobi.zhongyou.log.LogUtil;
+import com.bluemobi.zhongyou.model.OrderGoodsModel;
+import com.bluemobi.zhongyou.model.OrderOilsModel;
+import com.bluemobi.zhongyou.model.TypeModel;
+import com.bluemobi.zhongyou.scan.android.CaptureActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+public class PayCouponActivity extends BaseActivity implements PaymentMethodAdapter.OnPaymentMethodCallBack{
+    private PayCouponActivity mContext;
+    @BindView(R.id.title)
+    public TextView mTitle;
+    @BindView(R.id.recyclerView)
+    public RecyclerView mRecyclerView;
+    @BindView(R.id.typeLayout)
+    public LinearLayout mLayout;
+    @BindView(R.id.offerMoney)
+    public TextView mOfferMoney;
+    @BindView(R.id.realMoney)
+    public TextView mRealMoney;
+
+    private static final int REQUEST_CODE_SCAN = 0x0000;
+    private PaymentMethodAdapter mAdapter;
+
+    private int type = 0;
+    private OrderOilsModel mOrderOilsModel;
+    private OrderGoodsModel mOrderGoodsModel;
+    private View mView;
+    private List<TypeModel> mPaymentMethodList = new ArrayList<>();
+    private double couponMoney = 5;
+    private int couponNumber = 989898;
+    private double mCouponRealMoney;
+    private double oilCardMoney = -1;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_pay_coupon;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+        type = getIntent().getIntExtra("type",0);
+        oilCardMoney = getIntent().getDoubleExtra("oilCardMoney",-1);
+        mPaymentMethodList = JSON.parseArray(getIntent().getStringExtra("data"),TypeModel.class);
+
+        if (type == 0){
+            mTitle.setText(
+                    String.format(
+                            getResources().getString(R.string.unpaid_title),
+                            getResources().getString(R.string.oils)
+                    )
+            );
+            mOrderOilsModel = (OrderOilsModel) getIntent().getSerializableExtra("model");
+            mView = initOilsViewLayout(mOrderOilsModel);
+            mCouponRealMoney = mOrderOilsModel.getTotalPrice()-couponMoney;
+
+        }else {
+            mTitle.setText(
+                    String.format(
+                            getResources().getString(R.string.unpaid_title),
+                            getResources().getString(R.string.goods)
+                    )
+            );
+            mOrderGoodsModel = (OrderGoodsModel) getIntent().getSerializableExtra("model");
+            mView = initGoodsViewLayout(mOrderGoodsModel);
+            mCouponRealMoney = mOrderGoodsModel.getTotalPrice()-couponMoney;
+        }
+        mLayout.addView(mView);
+        mOfferMoney.setText(
+                String.format(getResources().getString(R.string.pay_offer_money),couponMoney)
+        );
+        mRealMoney.setText(
+                String.format(getResources().getString(R.string.pay_real_money),
+                        mCouponRealMoney
+                )
+        );
+        initRecyclerViewData();
+        mAdapter.setData(mPaymentMethodList);
+    }
+
+    private View initOilsViewLayout(OrderOilsModel model){
+        View view = getLayoutInflater().inflate(R.layout.comment_oils_item_layout,null);
+        TextView mOrderNumber = view.findViewById(R.id.orderNumber);
+        TextView mOrderTime = view.findViewById(R.id.orderTime);
+        TextView mOrderTotalPrice = view.findViewById(R.id.orderTotalPrice);
+        TextView mOilsGun = view.findViewById(R.id.orderOilGun);
+        TextView mOilsNumber = view.findViewById(R.id.orderOilNumber);
+        TextView mOilsLiters = view.findViewById(R.id.orderOilsLiters);
+        TextView mPrice = view.findViewById(R.id.orderPrice);
+        mOrderNumber.setText(
+                String.format(
+                        mContext.getResources().getString(R.string.pay_coupon_number),
+                        couponNumber
+                )
+        );
+        mOrderTime.setTextColor(getResources().getColor(R.color.red));
+        mOrderTime.setText(R.string.pay_coupon_used);
+        mOrderTotalPrice.setText(String.valueOf(model.getTotalPrice()));
+        mOilsGun.setText(String.valueOf(model.getOrderOilGun()));
+        mOilsNumber.setText(
+                String.format(
+                        mContext.getResources().getString(R.string.order_oil_number_unit),
+                        model.getOrderOilNumber()
+                )
+        );
+        mOilsLiters.setText(
+                String.format(
+                        mContext.getResources().getString(R.string.order_number_of_liters_unit),
+                        model.getOrderOilLiters()
+                )
+        );
+        mPrice.setText(String.valueOf(model.getOrderPrice()));
+        return view;
+    }
+
+    private View initGoodsViewLayout(OrderGoodsModel model){
+        View view = getLayoutInflater().inflate(R.layout.comment_good_item_layout,null);
+        RecyclerView mRecyclerView = view.findViewById(R.id.comment_recyclerView);
+        TextView mOrderNumber = view.findViewById(R.id.orderNumber);
+        TextView mOrderTime = view.findViewById(R.id.orderTime);
+        TextView mOrderTotalPrice = view.findViewById(R.id.orderTotalPrice);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext) {
+            @Override
+            public RecyclerView.LayoutParams generateDefaultLayoutParams() {
+                return new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+        };
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        CommentAdapter mAdapter = new CommentAdapter(mContext);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setData(model.getGoods());
+
+        mOrderNumber.setText(
+                String.format(
+                        mContext.getResources().getString(R.string.pay_coupon_number),
+                        couponNumber
+                )
+        );
+        mOrderTime.setTextColor(getResources().getColor(R.color.red));
+        mOrderTime.setText(R.string.pay_coupon_used);
+        mOrderTotalPrice.setText(String.valueOf(model.getTotalPrice()));
+
+        return view;
+    }
+
+    private void initRecyclerViewData(){
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        mAdapter = new PaymentMethodAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onItemPaymentListener(int position) {
+        List<TypeModel> list = mAdapter.getData();
+        switch (position){
+            case 0:
+            case 1:
+            case 2:
+                Intent intent = new Intent(mContext, CaptureActivity.class);
+                startActivityForResult(intent,REQUEST_CODE_SCAN);
+                break;
+            case 3:
+            case 4:
+                if (position == 3){
+                    list.remove(position+1);
+                    list.remove(position);
+                }else {
+                    list.remove(position);
+                    list.remove(position-1);
+                }
+                Intent card = new Intent(mContext,PaymentOilCardMoneyActivity.class);
+                card.putExtra("type",getIntent().getIntExtra("type",0));
+                card.putExtra("model",getIntent().getSerializableExtra("model"));
+                card.putExtra("data", JSON.toJSONString(list));
+                startActivity(card);
+                mContext.finish();
+                break;
+            case 5:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK){
+            if (data != null) {
+                String content = data.getStringExtra(CaptureActivity.RESULT_CONTENT);
+                LogUtil.d(content);
+                Intent intent = new Intent(mContext,PaymentSuccessActivity.class);
+                intent.putExtra("type",getIntent().getIntExtra("type",0));
+                intent.putExtra("model",getIntent().getSerializableExtra("model"));
+                intent.putExtra("offerMoney",couponMoney);
+                intent.putExtra("realMoney",mCouponRealMoney);
+                startActivity(intent);
+                mContext.finish();
+            }
+        }
+    }
+}

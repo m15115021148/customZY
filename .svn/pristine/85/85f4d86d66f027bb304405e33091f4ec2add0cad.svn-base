@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pop_txt_bg"
+    android:orientation="vertical"
+    tools:context=".ui.PaymentSuccessActivity">
+
+    <include
+        layout="@layout/include_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/typeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/_20px_in720p"
+        android:paddingStart="@dimen/_20px_in720p">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/offerMoney"
+        style="@style/PaymentSuccessTextViewStyle"
+        android:text="@string/pay_success_coupon_money" />
+
+    <TextView
+        android:id="@+id/oilCardMoney"
+        style="@style/PaymentSuccessTextViewStyle"
+        android:text="@string/pay_success_oil_card_money" />
+
+    <TextView
+        android:id="@+id/realMoney"
+        style="@style/PaymentSuccessTextViewStyle"
+        android:text="@string/pay_real_money" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_2px_in720p"
+        android:layout_marginEnd="@dimen/_20px_in720p"
+        android:layout_marginStart="@dimen/_20px_in720p"
+        android:layout_marginTop="@dimen/_20px_in720p"
+        android:background="@color/grey" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_80px_in720p"
+        android:text="@string/pay_success"
+        android:textColor="@color/blue_dan"
+        android:textSize="@dimen/_40px_in720p" />
+
+</LinearLayout>

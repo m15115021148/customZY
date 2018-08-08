@@ -1,0 +1,120 @@
+package com.bluemobi.zhongyou.adapter;
+
+import android.app.Activity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.model.OrderGoodsModel;
+import com.bluemobi.zhongyou.view.keyboard.CustomKeyboardHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class GoodsListAdapter extends BaseAdapter {
+    private Activity mContext;
+    private List<OrderGoodsModel.Goods> mList = new ArrayList<>();
+    private CustomKeyboardHelper mHelper;
+    private boolean isChange;
+    private Holder holder;
+
+    public GoodsListAdapter(Activity context){
+        this.mContext = context;
+        mHelper = new CustomKeyboardHelper(mContext);
+    }
+
+    public void setData(List<OrderGoodsModel.Goods> list) {
+        this.mList = list;
+        this.notifyDataSetChanged();
+    }
+
+    public List<OrderGoodsModel.Goods> getData() {
+        return this.mList;
+    }
+
+
+    @Override
+    public int getCount() {
+        return mList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return mList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null){
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.goods_list_item_layout,null);
+            holder = new Holder();
+            holder.mGoodType = convertView.findViewById(R.id.orderGoodsType);
+            holder.mGoodsName = convertView.findViewById(R.id.orderGoodsName);
+            holder.mPrice = convertView.findViewById(R.id.orderPrice);
+            holder.mGoodsNumber = convertView.findViewById(R.id.orderGoodsNumber);
+            holder.mTotalMoney = convertView.findViewById(R.id.orderGoodsTotalMoney);
+            convertView.setTag(holder);
+        }else {
+            holder = (Holder) convertView.getTag();
+        }
+
+        final OrderGoodsModel.Goods goods = mList.get(position);
+
+        holder.mGoodType.setText(goods.getType());
+        holder.mGoodsName.setText(goods.getName());
+        holder.mPrice.setText(String.valueOf(goods.getPrice()));
+        holder.mGoodsNumber.setText(
+                String.valueOf(goods.getNumber())
+        );
+        holder.mTotalMoney.setText(
+                String.valueOf(goods.getNumber() * goods.getPrice())
+        );
+
+        holder.mGoodsNumber.requestFocus();
+        mHelper.registerEditText(holder.mGoodsNumber);
+        holder.mGoodsNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                isChange = true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()>0 && isChange){
+                    goods.setNumber(Integer.parseInt(s.toString()));
+                    holder.mTotalMoney.setText(
+                            String.valueOf(goods.getNumber() * goods.getPrice())
+                    );
+                }
+            }
+        });
+
+        return convertView;
+    }
+
+    private class Holder{
+        public TextView mGoodType;
+        public TextView mGoodsName;
+        public TextView mPrice;
+        public EditText mGoodsNumber;
+        public TextView mTotalMoney;
+    }
+}

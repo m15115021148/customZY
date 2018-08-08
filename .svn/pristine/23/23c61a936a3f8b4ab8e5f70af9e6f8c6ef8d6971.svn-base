@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/x20"
+    android:paddingStart="@dimen/x20">
+
+    <TextView
+        android:id="@+id/offerMoney"
+        style="@style/PaymentCouponTextViewStyle"
+        android:text="@string/pay_offer_money" />
+
+    <TextView
+        android:id="@+id/oilCardMoney"
+        style="@style/PaymentCouponTextViewStyle"
+        android:text="@string/pay_success_oil_card_money"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/realMoney"
+        style="@style/PaymentCouponTextViewStyle"
+        android:text="@string/pay_real_money" />
+
+</LinearLayout>

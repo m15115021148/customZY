@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.bluemobi.zhongyou.view.recyclerview.SwipeMenuView
+        android:id="@+id/swipeView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x100"
+        android:layout_marginEnd="@dimen/x20"
+        android:layout_marginStart="@dimen/x20">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:padding="@dimen/x15">
+
+                <TextView
+                    android:id="@+id/orderGoodsType"
+                    style="@style/OrderTitleStyle"
+                    android:maxLines="2"
+                    android:singleLine="false" />
+
+                <TextView
+                    android:id="@+id/orderGoodsName"
+                    style="@style/OrderTitleStyle"
+                    android:maxLines="2"
+                    android:singleLine="false" />
+
+                <TextView
+                    android:id="@+id/orderPrice"
+                    style="@style/OrderTitleStyle" />
+
+                <EditText
+                    android:id="@+id/orderGoodsNumber"
+                    style="@style/OrderTitleStyle"
+                    android:background="@drawable/input_money_bg"
+                    android:longClickable="false"
+                    android:inputType="number"
+                    android:paddingBottom="@dimen/x15"
+                    android:paddingTop="@dimen/x15" />
+
+                <TextView
+                    android:id="@+id/orderGoodsTotalMoney"
+                    style="@style/OrderTitleStyle"
+                    android:textColor="@color/red" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/delete"
+            android:layout_width="@dimen/x140"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/x15"
+            android:background="@color/red"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x30" />
+
+        </LinearLayout>
+
+    </com.bluemobi.zhongyou.view.recyclerview.SwipeMenuView>
+
+</LinearLayout>

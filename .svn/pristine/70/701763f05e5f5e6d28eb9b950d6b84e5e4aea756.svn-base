@@ -1,0 +1,90 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.content.Intent;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.PaymentMethodAdapter;
+import com.bluemobi.zhongyou.log.LogUtil;
+import com.bluemobi.zhongyou.model.TypeModel;
+import com.bluemobi.zhongyou.scan.android.CaptureActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindArray;
+import butterknife.BindView;
+
+/**
+ * payment method
+ * create by chenMeng on 2018-05-30
+ */
+public class PaymentMethodActivity extends BaseActivity implements PaymentMethodAdapter.OnPaymentMethodCallBack{
+    private PaymentMethodActivity mContext;
+    @BindView(R.id.title)
+    public TextView mTitle;
+    @BindView(R.id.recyclerView)
+    public RecyclerView mRecyclerView;
+    private int[] res = {
+            R.drawable.pay_1,R.drawable.pay_2,R.drawable.pay_3,
+            R.drawable.pay_4,R.drawable.pay_5,R.drawable.pay_6,R.drawable.pay_7
+    };
+    @BindArray(R.array.PaymentArray)
+    public String[] mArray;
+    private static final int REQUEST_CODE_SCAN = 0x0000;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_payment_method;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+        mTitle.setText(R.string.payment_method);
+        initRecyclerViewData();
+    }
+
+    private void initRecyclerViewData(){
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        PaymentMethodAdapter mAdapter = new PaymentMethodAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setData(getData(mArray,res));
+    }
+
+    private List<TypeModel> getData(String[] str, int[] res){
+        List<TypeModel> list = new ArrayList<>();
+        for (int i=0;i<str.length;i++){
+            TypeModel model = new TypeModel();
+            model.setName(str[i]);
+            model.setRes(res[i]);
+            list.add(model);
+        }
+        return list;
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
+        switch (position){
+            case 0:
+            case 1:
+            case 2:
+                Intent intent = new Intent(mContext, CaptureActivity.class);
+                startActivityForResult(intent,REQUEST_CODE_SCAN);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK){
+            if (data != null) {
+                String content = data.getStringExtra(CaptureActivity.RESULT_CONTENT);
+                LogUtil.d(content);
+            }
+        }
+    }
+}

@@ -1,0 +1,49 @@
+package com.bluemobi.zhongyou.fragment;
+
+import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.UnpaidOilsAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class OilsFragment extends BaseFragment {
+    private Context mContext;
+    @BindView(R.id.recyclerView)
+    public RecyclerView mRecyclerView;
+    private UnpaidOilsAdapter mAdapter;
+
+    @Override
+    protected int setContentView() {
+        return R.layout.fragment_oils;
+    }
+
+    @Override
+    protected void startLoad() {
+        List list = new ArrayList();
+        for (int i=0;i<10;i++){
+            list.add(String.valueOf(i));
+        }
+        if (mAdapter!=null)mAdapter.setData(list);
+    }
+
+    @Override
+    protected void initData() {
+        mContext = getContext();
+        initRecyclerViewData();
+    }
+
+    private void initRecyclerViewData(){
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mAdapter = new UnpaidOilsAdapter();
+        mRecyclerView.setAdapter(mAdapter);
+    }
+}

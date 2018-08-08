@@ -1,0 +1,220 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+import com.bluemobi.zhongyou.adapter.CommentAdapter;
+import com.bluemobi.zhongyou.application.MyApplication;
+import com.bluemobi.zhongyou.model.OrderGoodsModel;
+import com.bluemobi.zhongyou.model.OrderOilsModel;
+import com.bluemobi.zhongyou.model.PrinterModel;
+import com.bluemobi.zhongyou.util.PrintContract;
+import com.bluemobi.zhongyou.util.PrintFormatUtils;
+import com.sunmi.printerhelper.utils.AidlUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+public class PaymentSuccessActivity extends BaseActivity {
+    private PaymentSuccessActivity mContext;
+    @BindView(R.id.title)
+    public TextView mTitle;
+    @BindView(R.id.typeLayout)
+    public LinearLayout mLayout;
+    @BindView(R.id.offerMoney)
+    public TextView mOfferMoney;
+    @BindView(R.id.oilCardMoney)
+    public TextView mOilCardMoney;
+    @BindView(R.id.realMoney)
+    public TextView mRealMoney;
+
+    private int type = 0;
+    private OrderOilsModel mOrderOilsModel;
+    private OrderGoodsModel mOrderGoodsModel;
+    private View mView;
+    private double offerMoney = -1;
+    private double oilCardMoney = -1;
+    private double realMoney = -1;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_payment_success;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+        type = getIntent().getIntExtra("type",0);
+        offerMoney = getIntent().getDoubleExtra("offerMoney",-1);
+        oilCardMoney = getIntent().getDoubleExtra("oilCardMoney",-1);
+        realMoney = getIntent().getDoubleExtra("realMoney",-1);
+        if (type == 0){
+            mTitle.setText(
+                    String.format(
+                            getResources().getString(R.string.unpaid_title),
+                            getResources().getString(R.string.oils)
+                    )
+            );
+            mOrderOilsModel = (OrderOilsModel) getIntent().getSerializableExtra("model");
+            mView = initOilsViewLayout(mOrderOilsModel);
+        }else {
+            mTitle.setText(
+                    String.format(
+                            getResources().getString(R.string.unpaid_title),
+                            getResources().getString(R.string.goods)
+                    )
+            );
+            mOrderGoodsModel = (OrderGoodsModel) getIntent().getSerializableExtra("model");
+            mView = initGoodsViewLayout(mOrderGoodsModel);
+        }
+        mLayout.addView(mView);
+
+        if (offerMoney == -1) {
+            mOfferMoney.setVisibility(View.GONE);
+        } else {
+            mOfferMoney.setVisibility(View.VISIBLE);
+            mOfferMoney.setText(String.format(getResources().getString(R.string.pay_success_coupon_money), offerMoney));
+        }
+        if (oilCardMoney == -1) {
+            mOilCardMoney.setVisibility(View.GONE);
+        } else {
+            mOilCardMoney.setVisibility(View.VISIBLE);
+            mOilCardMoney.setText(String.format(getResources().getString(R.string.pay_success_oil_card_money), oilCardMoney));
+        }
+        if (realMoney == -1) {
+            mRealMoney.setVisibility(View.GONE);
+        } else {
+            mRealMoney.setVisibility(View.VISIBLE);
+            mRealMoney.setText(String.format(getResources().getString(R.string.pay_real_money), realMoney));
+        }
+        if (type == 0){
+            printerByte(PrintContract.startPrinter(getPrinterOilModel()));
+        }else {
+            printerByte(PrintContract.startPrinter(getPrinterGoodsModel()));
+        }
+
+    }
+
+    private View initOilsViewLayout(OrderOilsModel model){
+        View view = getLayoutInflater().inflate(R.layout.comment_oils_item_layout,null);
+        TextView mOrderNumber = view.findViewById(R.id.orderNumber);
+        TextView mOrderTime = view.findViewById(R.id.orderTime);
+        TextView mOrderTotalPrice = view.findViewById(R.id.orderTotalPrice);
+        TextView mOilsGun = view.findViewById(R.id.orderOilGun);
+        TextView mOilsNumber = view.findViewById(R.id.orderOilNumber);
+        TextView mOilsLiters = view.findViewById(R.id.orderOilsLiters);
+        TextView mPrice = view.findViewById(R.id.orderPrice);
+        mOrderNumber.setText(
+                String.format(
+                        mContext.getResources().getString(R.string.order_number),
+                        model.getOrderNumber()
+                )
+        );
+        mOrderTime.setText(model.getOrderTime());
+        mOrderTotalPrice.setText(String.valueOf(model.getTotalPrice()));
+        mOilsGun.setText(String.valueOf(model.getOrderOilGun()));
+        mOilsNumber.setText(
+                String.format(
+                        mContext.getResources().getString(R.string.order_oil_number_unit),
+                        model.getOrderOilNumber()
+                )
+        );
+        mOilsLiters.setText(
+                String.format(
+                        mContext.getResources().getString(R.string.order_number_of_liters_unit),
+                        model.getOrderOilLiters()
+                )
+        );
+        mPrice.setText(String.valueOf(model.getOrderPrice()));
+        return view;
+    }
+
+    private View initGoodsViewLayout(OrderGoodsModel model){
+        View view = getLayoutInflater().inflate(R.layout.comment_good_item_layout,null);
+        RecyclerView mRecyclerView = view.findViewById(R.id.comment_recyclerView);
+        TextView mOrderNumber = view.findViewById(R.id.orderNumber);
+        TextView mOrderTime = view.findViewById(R.id.orderTime);
+        TextView mOrderTotalPrice = view.findViewById(R.id.orderTotalPrice);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext) {
+            @Override
+            public RecyclerView.LayoutParams generateDefaultLayoutParams() {
+                return new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+        };
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        CommentAdapter mAdapter = new CommentAdapter(mContext);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setData(model.getGoods());
+
+        mOrderNumber.setText(
+                String.format(
+                        mContext.getResources().getString(R.string.order_number),
+                        model.getOrderNumber()
+                )
+        );
+        mOrderTime.setText(model.getOrderTime());
+        mOrderTotalPrice.setText(String.valueOf(model.getTotalPrice()));
+
+        return view;
+    }
+
+    private PrinterModel getPrinterOilModel(){
+        PrinterModel model = new PrinterModel();
+        model.setmType("油枪");
+        model.setmName("油号");
+        model.setmNumber("升数");
+        model.setOrderNumber(mOrderOilsModel.getOrderNumber());
+        model.setTime(mOrderOilsModel.getOrderTime());
+        model.setTotalPrice(mOrderOilsModel.getTotalPrice());
+        model.setOffer(offerMoney==-1?0:offerMoney);
+        model.setActualAmount(offerMoney==-1?mOrderOilsModel.getTotalPrice():mOrderOilsModel.getTotalPrice()-offerMoney);
+
+        List<PrinterModel.Printers> list = new ArrayList<>();
+        PrinterModel.Printers p = new PrinterModel.Printers();
+        p.setType(String.valueOf(mOrderOilsModel.getOrderOilGun()));
+        p.setName(mOrderOilsModel.getOrderOilNumber()+"#");
+        p.setNumber(mOrderOilsModel.getOrderOilLiters());
+        p.setPrice(mOrderOilsModel.getOrderPrice());
+        list.add(p);
+        model.setData(list);
+
+        return model;
+    }
+
+    private PrinterModel getPrinterGoodsModel(){
+        PrinterModel model = new PrinterModel();
+        model.setmType("类别");
+        model.setmName("名称");
+        model.setmNumber("数量");
+        model.setOrderNumber(mOrderGoodsModel.getOrderNumber());
+        model.setTime(mOrderGoodsModel.getOrderTime());
+        model.setTotalPrice(mOrderGoodsModel.getTotalPrice());
+        model.setOffer(offerMoney==-1?0:offerMoney);
+        model.setActualAmount(offerMoney==-1?mOrderGoodsModel.getTotalPrice():mOrderGoodsModel.getTotalPrice()-offerMoney);
+
+        List<PrinterModel.Printers> list = new ArrayList<>();
+        List<OrderGoodsModel.Goods> goods = mOrderGoodsModel.getGoods();
+        for (OrderGoodsModel.Goods g:goods){
+            PrinterModel.Printers p = new PrinterModel.Printers();
+            p.setType(g.getType());
+            p.setName(g.getName());
+            p.setNumber(g.getNumber());
+            p.setPrice(g.getPrice());
+            list.add(p);
+        }
+
+        model.setData(list);
+
+        return model;
+    }
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/_10px_in720p"
+        android:paddingTop="@dimen/_10px_in720p">
+
+        <TextView
+            android:id="@+id/orderGoodsType"
+            style="@style/OrderTitleStyle"
+            android:maxLines="2"
+            android:singleLine="false" />
+
+        <TextView
+            android:id="@+id/orderGoodsName"
+            style="@style/OrderTitleStyle"
+            android:maxLines="2"
+            android:singleLine="false" />
+
+        <TextView
+            android:id="@+id/orderPrice"
+            style="@style/OrderTitleStyle" />
+
+        <TextView
+            android:id="@+id/orderGoodsNumber"
+            style="@style/OrderTitleStyle" />
+
+    </LinearLayout>
+
+</LinearLayout>

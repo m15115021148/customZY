@@ -1,0 +1,98 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/title_bg</item>
+        <item name="colorPrimaryDark">@color/title_bg</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:launchMode">singleTop</item>
+        <item name="android:windowNoTitle">true</item>
+
+    </style>
+
+    <style name="dialogWindowAnimSide" parent="android:Animation" mce_bogus="1">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+    <style name="dialog_normal" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="HomePagerTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/x120</item>
+        <item name="android:textSize">@dimen/x35</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_margin">@dimen/x20</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="OrderTitleStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">@dimen/x30</item>
+        <item name="android:textColor">@color/black_dan</item>
+        <item name="android:paddingStart">@dimen/x5</item>
+        <item name="android:paddingEnd">@dimen/x5</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="PaymentCouponTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/x30</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:paddingEnd">@dimen/x20</item>
+        <item name="android:paddingTop">@dimen/x10</item>
+        <item name="android:paddingBottom">@dimen/x10</item>
+        <item name="android:layout_gravity">center_vertical|right</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="PaymentSuccessTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/x30</item>
+        <item name="android:textColor">@color/blue_dan</item>
+        <item name="android:paddingEnd">@dimen/x20</item>
+        <item name="android:paddingTop">@dimen/x10</item>
+        <item name="android:paddingBottom">@dimen/x10</item>
+        <item name="android:layout_gravity">center_vertical|right</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="ReturnsTimesTextViewStyle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">@dimen/x30</item>
+        <item name="android:textColor">@color/black_dan</item>
+        <item name="android:layout_marginStart">@dimen/x20</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/input_money_bg</item>
+    </style>
+
+    <style name="GoodsListTextViewStyle">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_width">@dimen/x200</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/x30</item>
+        <item name="android:textColor">@color/black_dan</item>
+        <item name="android:padding">@dimen/x20</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/input_money_bg</item>
+    </style>
+
+</resources>

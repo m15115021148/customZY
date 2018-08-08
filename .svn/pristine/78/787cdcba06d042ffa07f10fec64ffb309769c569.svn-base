@@ -1,0 +1,102 @@
+package com.bluemobi.zhongyou.util;
+
+import com.bluemobi.zhongyou.model.PrinterModel;
+import com.sunmi.printerhelper.utils.AidlUtil;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class PrintContract {
+
+    /**
+     * 打印内容
+     */
+    public static byte[] createOils(PrinterModel model){
+
+        StringBuilder builder = new StringBuilder();
+
+        //设置大号字体以及加粗
+        builder.append(PrintFormatUtils.getFontSizeCmd(PrintFormatUtils.FONT_MIDDLE));
+        builder.append(PrintFormatUtils.getFontBoldCmd(PrintFormatUtils.FONT_BOLD));
+        builder.append(PrintFormatUtils.getAlignCmd(PrintFormatUtils.ALIGN_CENTER));
+
+        // 标题
+        builder.append(model.getmTitle());
+        //换行，调用次数根据换行数来控制
+        addLineSeparator(builder);
+        addLineSeparator(builder);
+
+        //设置普通字体大小、不加粗
+        builder.append(PrintFormatUtils.getFontSizeCmd(PrintFormatUtils.FONT_NORMAL));
+        builder.append(PrintFormatUtils.getFontBoldCmd(PrintFormatUtils.FONT_BOLD_CANCEL));
+        builder.append(PrintFormatUtils.getAlignCmd(PrintFormatUtils.ALIGN_LEFT));
+        //划线
+        addLine(builder);
+        builder.append(model.getmOrderNumber()).append(model.getOrderNumber());
+        addLineSeparator(builder);
+        builder.append(model.getmTime()).append(model.getTime());
+        addLineSeparator(builder);
+        addLine(builder);
+        builder.append(model.getmName()).append(" ").append(" ").append(" ");
+        builder.append(model.getmNumber()).append(" ").append(" ").append(" ");
+        builder.append(model.getmPrice()).append(" ").append(" ").append(" ");
+        addLineSeparator(builder);
+        for (int i=0;i<model.getData().size();i++){
+            PrinterModel.Printers p = model.getData().get(i);
+            builder.append(p.getName()).append(" ").append(" ").append(" ").append(" ");
+            builder.append(p.getNumber()).append(" ").append(" ").append(" ").append(" ");
+            builder.append(p.getPrice()).append(" ").append(" ").append(" ").append(" ");
+            addLineSeparator(builder);
+        }
+        addLine(builder);
+        builder.append(model.getmTotalPrice()).append(model.getTotalPrice());
+        addLineSeparator(builder);
+        builder.append(model.getmOffer()).append(model.getOffer());
+        addLineSeparator(builder);
+        builder.append(model.getmActualAmount()).append(model.getActualAmount());
+        addLineSeparator(builder);
+        addLineSeparator(builder);
+        addLine(builder);
+
+        builder.append(PrintFormatUtils.getFontSizeCmd(PrintFormatUtils.FONT_MIDDLE));
+        builder.append(PrintFormatUtils.getFontBoldCmd(PrintFormatUtils.FONT_BOLD));
+        builder.append(model.getQrTitle());
+
+        builder.append(PrintFormatUtils.getFontSizeCmd(PrintFormatUtils.FONT_NORMAL));
+        builder.append(PrintFormatUtils.getFontBoldCmd(PrintFormatUtils.FONT_BOLD_CANCEL));
+        builder.append(PrintFormatUtils.getAlignCmd(PrintFormatUtils.ALIGN_CENTER));
+        addLineSeparator(builder);
+        addLineSeparator(builder);
+        builder.append(PrintFormatUtils.getQrCodeCmd(model.getQrContent()));
+        addLineSeparator(builder);
+
+        addLineSeparator(builder);
+        addLineSeparator(builder);
+        addLineSeparator(builder);
+        addLineSeparator(builder);
+
+        return PrintFormatUtils.stringToBytes(builder.toString());
+    }
+
+    /**
+     * 向StringBuilder中添加指定数量的相同字符
+     *
+     * @param printCount  添加的字符数量
+     * @param identicalStr 添加的字符
+     */
+    private static void addIdenticalStrToStringBuilder(StringBuilder builder, int printCount, String identicalStr) {
+        for (int i = 0; i < printCount; i++) {
+            builder.append(identicalStr);
+        }
+    }
+
+
+    private static void addLineSeparator(StringBuilder builder) {
+        builder.append("\n");
+    }
+
+    private static void addLine(StringBuilder builder){
+        builder.append("-------------------------------"+"\n");
+    }
+
+}

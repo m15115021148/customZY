@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/x20"
+    android:paddingEnd="@dimen/x20"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/offerMoney"
+        style="@style/PaymentCouponTextViewStyle"
+        android:text="@string/pay_offer_money" />
+
+    <TextView
+        android:id="@+id/realMoney"
+        style="@style/PaymentCouponTextViewStyle"
+        android:text="@string/pay_real_money" />
+
+</LinearLayout>

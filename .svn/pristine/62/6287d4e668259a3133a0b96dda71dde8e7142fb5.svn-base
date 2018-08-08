@@ -1,0 +1,58 @@
+package com.bluemobi.zhongyou.http.retrofit;
+
+
+import com.bluemobi.zhongyou.config.WebHostConfig;
+import com.bluemobi.zhongyou.http.okhttp.OkHttpHelper;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+/**
+ * <p>Description:
+ * <p>
+ * <p>Created by chenmeng on 2017/9/3.
+ */
+
+public class RetrofitHelper {
+    private static Retrofit retrofit;
+
+    private RetrofitHelper() {
+    }
+
+    public static Retrofit getInstance() {
+        if (retrofit == null){
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(WebHostConfig.getHostName())
+                    .client(OkHttpHelper.getClient())
+                    .addConverterFactory(StringConverterFactory.create()) //String 转换
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .validateEagerly(true)
+                    .build();
+        }
+        return retrofit;
+    }
+
+    public static Retrofit getInstance(int type) {
+        if (retrofit != null){
+            retrofit = null;
+        }
+        String baseUrl = WebHostConfig.getHostName();
+        if (type == 1){
+            baseUrl = WebHostConfig.getCouponAddress();
+        }else if (type == 2){
+            baseUrl = WebHostConfig.getInvoiceAddress();
+        }
+        retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(OkHttpHelper.getClient())
+                .addConverterFactory(StringConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .validateEagerly(true)
+                .build();
+        return retrofit;
+    }
+
+}

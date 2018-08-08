@@ -1,0 +1,24 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.view.View;
+
+import com.bluemobi.zhongyou.R;
+
+public class PaidActivity extends BaseActivity implements View.OnClickListener {
+    private PaidActivity mContext;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_paid;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+}

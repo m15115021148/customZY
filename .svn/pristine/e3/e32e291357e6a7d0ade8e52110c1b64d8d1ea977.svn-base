@@ -1,0 +1,72 @@
+package com.bluemobi.zhongyou.bean;
+
+import java.io.Serializable;
+
+/**
+ * Created by ${chenM} on ${2017}.
+ */
+public class OrderOilsBean implements Serializable{
+    private int orderNumber;
+    private String orderTime;
+    private int orderOilGun;
+    private int orderOilNumber;
+    private int orderOilLiters;
+    private double orderPrice;
+    private double totalPrice;
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public int getOrderOilGun() {
+        return orderOilGun;
+    }
+
+    public void setOrderOilGun(int orderOilGun) {
+        this.orderOilGun = orderOilGun;
+    }
+
+    public int getOrderOilNumber() {
+        return orderOilNumber;
+    }
+
+    public void setOrderOilNumber(int orderOilNumber) {
+        this.orderOilNumber = orderOilNumber;
+    }
+
+    public int getOrderOilLiters() {
+        return orderOilLiters;
+    }
+
+    public void setOrderOilLiters(int orderOilLiters) {
+        this.orderOilLiters = orderOilLiters;
+    }
+
+    public double getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(double orderPrice) {
+        this.orderPrice = orderPrice;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+}

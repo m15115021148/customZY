@@ -1,0 +1,59 @@
+package com.bluemobi.zhongyou.ui;
+
+import android.content.Intent;
+import android.view.View;
+import android.widget.TextView;
+
+import com.bluemobi.zhongyou.R;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.BindViews;
+
+public class HomePagerActivity extends BaseActivity implements View.OnClickListener{
+    private HomePagerActivity mContext;
+    @BindView(R.id.title)
+    public TextView mTitle;
+    @BindViews({R.id.unpaid,R.id.returns,R.id.paid})
+    public List<TextView> mMenuTypeList;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_home_pager;
+    }
+
+    @Override
+    protected void initData() {
+        mContext = this;
+        mTitle.setText(R.string.home_title);
+        mMenuTypeList.get(0).setOnClickListener(this);
+        mMenuTypeList.get(1).setOnClickListener(this);
+        mMenuTypeList.get(2).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Intent intent = new Intent();
+        intent.setAction(BaseActivity.TAG_ESC_ACTIVITY);
+        sendBroadcast(intent);
+        mContext.finish();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == mMenuTypeList.get(0)){
+            Intent intent = new Intent(mContext,UnpaidActivity.class);
+            startActivity(intent);
+        }
+        if (view == mMenuTypeList.get(1)){
+            Intent intent = new Intent(mContext,ReturnsActivity.class);
+            startActivity(intent);
+        }
+        if (view == mMenuTypeList.get(2)){
+            Intent intent = new Intent(mContext,PaidActivity.class);
+            startActivity(intent);
+        }
+    }
+}
